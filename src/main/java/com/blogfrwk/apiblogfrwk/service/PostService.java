@@ -52,10 +52,18 @@ public class PostService {
         return postMapper.toDTO(post);
     }
 
+    public MessageResponse updateById(Long id, PostDTO postDTO) throws PostNotFoundException {
+        verifyExists(id);
+        postDTO.setId(id);
+        Post postToUpdate = postMapper.toModel(postDTO);
+        Post updatedPost = postRepository.save(postToUpdate);
+        return new MessageResponse("Updated post with ID " + id);
+    }
+
     public MessageResponse deleteById(Long id) throws PostNotFoundException, PostCanNotBeDeletedException {
         Post postToDelete = verifyExists(id);
         String userCurrentSection = getUserCurrentSection();
-        if (!postToDelete.getOwnerName().equals(userCurrentSection)) {
+        if (postToDelete.getOwnerName() != null && !postToDelete.getOwnerName().equals(userCurrentSection)) {
             throw new PostCanNotBeDeletedException();
         }
         postRepository.deleteById(id);
@@ -69,4 +77,6 @@ public class PostService {
         }
         return optionalPost.get();
     }
+
+
 }

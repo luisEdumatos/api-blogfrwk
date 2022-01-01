@@ -2,7 +2,9 @@ package com.blogfrwk.apiblogfrwk;
 
 import com.blogfrwk.apiblogfrwk.controller.AuthController;
 import com.blogfrwk.apiblogfrwk.controller.PostController;
+import com.blogfrwk.apiblogfrwk.dto.request.LoginRequest;
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
+import com.blogfrwk.apiblogfrwk.dto.request.SignupRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -50,6 +52,7 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
         this.postMockMvc.perform(MockMvcRequestBuilders.get("/api/posts")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
     public void testFindPostById() throws Exception {
         PostDTO postMock = new PostDTO();
         postMock.setDescription("Descricao do Post de Teste");
@@ -57,6 +60,19 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
         this.postController.createPost(postMock);
 
         this.postMockMvc.perform(MockMvcRequestBuilders.get("/api/posts/1")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testUpdatePostById() throws Exception{
+        PostDTO postMock = new PostDTO();
+        postMock.setDescription("Descricao do Post de Teste");
+
+        this.postController.createPost(postMock);
+
+        this.postMockMvc.perform(MockMvcRequestBuilders.put("/api/posts/1")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(postMock)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
