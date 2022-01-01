@@ -19,6 +19,6 @@ public class PostService {
     public MessageResponse createPost(PostDTO postDTO) {
         Post postToSave = postMapper.toModel(postDTO);
         Post savedPost = postRepository.save(postToSave);
-        return new MessageResponse("Created post with ID " + savedPost.getId());
+        return new MessageResponse("Created Post with ID " + savedPost.getId());
     }
 }
