@@ -29,9 +29,6 @@ class ApiBlogfrwkApplicationTests {
 	@Autowired
 	private AuthController authController;
 
-	private static LoginRequest loginRequest;
-	private static SignupRequest signupRequest;
-
 	@Test
 	void contextLoads() {
 	}
@@ -41,26 +38,35 @@ class ApiBlogfrwkApplicationTests {
 		this.authMockMvc = MockMvcBuilders.standaloneSetup(authController).build();
 	}
 
-	private void createSignupRequestMock() {
-		signupRequest = new SignupRequest();
-		signupRequest.setUsername("admin");
-		signupRequest.setEmail("admin@blogfrwk.com");
-		signupRequest.setPassword("123456");
-	}
-
-	private void createLoginRequestMock() {
-		loginRequest = new LoginRequest();
-		loginRequest.setUsername("admin");
-		loginRequest.setPassword("123456");
-	}
-
 	@Test
 	public void testCreateUserSignupRequest() throws Exception {
-		this.createSignupRequestMock();
+		SignupRequest signupMock = new SignupRequest();
+		signupMock.setUsername("admin");
+		signupMock.setEmail("admin@blogfrwk.com");
+		signupMock.setPassword("123456");
+
 		this.authMockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
 				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(signupRequest)))
+				.content(objectMapper.writeValueAsString(signupMock)))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
+	@Test
+	public void testLoginRequest() throws Exception {
+		SignupRequest signupMock = new SignupRequest();
+		signupMock.setUsername("admin2");
+		signupMock.setEmail("admin2@blogfrwk.com");
+		signupMock.setPassword("123456");
+
+		LoginRequest signinMock = new LoginRequest();
+		signinMock.setUsername("admin2");
+		signinMock.setPassword("123456");
+
+		this.authController.registerUser(signupMock);
+
+		this.authMockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signin")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(signinMock)))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
 }
