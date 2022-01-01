@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -25,6 +26,11 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponse createPost(@RequestBody @Valid PostDTO postDTO) {
         return postService.createPost(postDTO);
+    }
+
+    @GetMapping
+    public List<PostDTO> listAll() {
+        return postService.listAll();
     }
 
     @DeleteMapping("/{id}")

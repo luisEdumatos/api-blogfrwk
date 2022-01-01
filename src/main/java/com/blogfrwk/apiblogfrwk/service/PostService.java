@@ -1,6 +1,5 @@
 package com.blogfrwk.apiblogfrwk.service;
 
-
 import com.blogfrwk.apiblogfrwk.dto.mapper.PostMapper;
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
@@ -16,7 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -37,6 +38,13 @@ public class PostService {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return userDetails.getUsername();
+    }
+
+    public List<PostDTO> listAll() {
+        List<Post> allPosts = postRepository.findAll();
+        return allPosts.stream()
+                .map(postMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public MessageResponse deleteById(Long id) throws PostNotFoundException, PostCanNotBeDeletedException {
