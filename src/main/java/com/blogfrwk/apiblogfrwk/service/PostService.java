@@ -5,6 +5,7 @@ import com.blogfrwk.apiblogfrwk.dto.mapper.PostMapper;
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Post;
+import com.blogfrwk.apiblogfrwk.exception.PostCanNotBeDeletedException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.PostRepository;
 import com.blogfrwk.apiblogfrwk.security.jwt.JwtUtils;
@@ -27,19 +28,23 @@ public class PostService {
 
     public MessageResponse createPost(PostDTO postDTO) {
         Post postToSave = postMapper.toModel(postDTO);
-        postToSave.setOwnerName(getPostOwnerName());
+        postToSave.setOwnerName(getUserCurrentSection());
         Post savedPost = postRepository.save(postToSave);
         return new MessageResponse("Created Post with ID " + savedPost.getId());
     }
 
-    private String getPostOwnerName() {
+    private String getUserCurrentSection() {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return userDetails.getUsername();
     }
 
-    public MessageResponse deleteById(Long id) throws PostNotFoundException {
-        verifyExists(id);
+    public MessageResponse deleteById(Long id) throws PostNotFoundException, PostCanNotBeDeletedException {
+        Post postToDelete = verifyExists(id);
+        String userCurrentSection = getUserCurrentSection();
+        if (!postToDelete.getOwnerName().equals(userCurrentSection)) {
+            throw new PostCanNotBeDeletedException();
+        }
         postRepository.deleteById(id);
         return new MessageResponse("Post with ID " + id + " has been deleted successfully");
     }

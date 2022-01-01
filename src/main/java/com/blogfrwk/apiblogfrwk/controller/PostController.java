@@ -3,6 +3,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
+import com.blogfrwk.apiblogfrwk.exception.PostCanNotBeDeletedException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.PostService;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MessageResponse deleteById(@PathVariable Long id) throws PostNotFoundException {
+    public MessageResponse deleteById(@PathVariable Long id) throws PostNotFoundException, PostCanNotBeDeletedException {
         return postService.deleteById(id);
     }
 }
