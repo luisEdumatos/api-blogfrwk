@@ -33,6 +33,11 @@ public class PostController {
         return postService.listAll();
     }
 
+    @GetMapping("/{id}")
+    public PostDTO findById(@PathVariable Long id) throws PostNotFoundException {
+        return postService.findByID(id);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse deleteById(@PathVariable Long id) throws PostNotFoundException, PostCanNotBeDeletedException {

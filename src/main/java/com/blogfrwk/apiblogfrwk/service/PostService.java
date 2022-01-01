@@ -47,6 +47,11 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public PostDTO findByID(Long id) throws PostNotFoundException {
+        Post post = verifyExists(id);
+        return postMapper.toDTO(post);
+    }
+
     public MessageResponse deleteById(Long id) throws PostNotFoundException, PostCanNotBeDeletedException {
         Post postToDelete = verifyExists(id);
         String userCurrentSection = getUserCurrentSection();

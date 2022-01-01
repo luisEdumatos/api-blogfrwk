@@ -50,6 +50,15 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
         this.postMockMvc.perform(MockMvcRequestBuilders.get("/api/posts")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    public void testFindPostById() throws Exception {
+        PostDTO postMock = new PostDTO();
+        postMock.setDescription("Descricao do Post de Teste");
+
+        this.postController.createPost(postMock);
+
+        this.postMockMvc.perform(MockMvcRequestBuilders.get("/api/posts/1")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
     @Test
     public void testDeletePostById() throws Exception {
         PostDTO postMock = new PostDTO();
@@ -57,7 +66,7 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
 
         this.postController.createPost(postMock);
 
-        this.postMockMvc.perform(MockMvcRequestBuilders.delete("/api/posts/1")
+        this.postMockMvc.perform(MockMvcRequestBuilders.delete("/api/posts/2")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(postMock)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
