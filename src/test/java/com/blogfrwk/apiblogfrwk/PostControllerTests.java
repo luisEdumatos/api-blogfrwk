@@ -5,6 +5,7 @@ import com.blogfrwk.apiblogfrwk.controller.PostController;
 import com.blogfrwk.apiblogfrwk.dto.request.LoginRequest;
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.request.SignupRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,18 +39,6 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
 
     @Test
     public void testCreatePost() throws Exception {
-        SignupRequest signupMock = new SignupRequest();
-        signupMock.setUsername("admin3");
-        signupMock.setEmail("admin3@blogfrwk.com");
-        signupMock.setPassword("123456");
-
-        LoginRequest signinMock = new LoginRequest();
-        signinMock.setUsername("admin3");
-        signinMock.setPassword("123456");
-
-        this.authController.registerUser(signupMock);
-        this.authController.authenticateUser(signinMock);
-
         PostDTO postMock = new PostDTO();
         postMock.setDescription("Descricao do Post de Teste");
 
@@ -57,5 +46,18 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(postMock)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    public void testDeletePostById() throws Exception {
+        PostDTO postMock = new PostDTO();
+        postMock.setDescription("Descricao do Post de Teste");
+
+        this.postController.createPost(postMock);
+
+        this.postMockMvc.perform(MockMvcRequestBuilders.delete("/api/posts/1")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(postMock)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
