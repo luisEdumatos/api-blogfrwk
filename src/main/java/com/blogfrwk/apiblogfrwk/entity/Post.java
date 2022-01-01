@@ -26,4 +26,7 @@ public class Post {
 
     @Column
     private String mainLink;
+
+    @Column
+    private String ownerName;
 }

@@ -3,6 +3,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
+import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,9 @@ public class PostController {
         return postService.createPost(postDTO);
     }
 
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) throws PostNotFoundException {
+        postService.deleteById(id);
+    }
 }
