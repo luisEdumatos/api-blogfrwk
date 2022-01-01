@@ -38,9 +38,10 @@ public class PostService {
         return userDetails.getUsername();
     }
 
-    public void deleteById(Long id) throws PostNotFoundException {
+    public MessageResponse deleteById(Long id) throws PostNotFoundException {
         verifyExists(id);
         postRepository.deleteById(id);
+        return new MessageResponse("Post with ID " + id + " has been deleted successfully");
     }
 
     private Post verifyExists(Long id) throws PostNotFoundException {

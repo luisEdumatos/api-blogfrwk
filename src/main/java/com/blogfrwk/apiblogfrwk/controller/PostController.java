@@ -27,8 +27,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id) throws PostNotFoundException {
-        postService.deleteById(id);
+    @ResponseStatus(HttpStatus.OK)
+    public MessageResponse deleteById(@PathVariable Long id) throws PostNotFoundException {
+        return postService.deleteById(id);
     }
 }
