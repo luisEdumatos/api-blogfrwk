@@ -1,11 +1,14 @@
 package com.blogfrwk.apiblogfrwk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,4 +35,11 @@ public class Post {
 
     @Column
     private String ownerName;
+
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.REMOVE
+    )
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
 }
