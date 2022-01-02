@@ -8,6 +8,9 @@ import com.blogfrwk.apiblogfrwk.entity.UserSystem;
 import com.blogfrwk.apiblogfrwk.repository.UserSystemRepository;
 import com.blogfrwk.apiblogfrwk.security.jwt.JwtUtils;
 import com.blogfrwk.apiblogfrwk.security.services.UserDetailsImpl;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +39,12 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @ApiOperation(value = "Realiza login no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Login efetuado com sucesso"),
+            @ApiResponse(code = 401, message = "Falha no login, usuário não tem cadastro"),
+            @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
+    })
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -53,6 +62,12 @@ public class AuthController {
                 userDetails.getEmail()));
     }
 
+    @ApiOperation(value = "Cadastra novo usuário de acesso ao sistema")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Usuário cadastrado com sucesso"),
+            @ApiResponse(code = 400, message = "Usuário ou e-mail já foram utilizados / Erro na validação dos campos"),
+            @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
+    })
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
