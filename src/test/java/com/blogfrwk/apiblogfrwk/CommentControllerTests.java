@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @TestPropertySource(locations="classpath:test.properties")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CommentControllerTests {
+public class CommentControllerTests extends ApiBlogfrwkApplicationTests {
 
     private MockMvc commentMockMvc;
 
@@ -49,6 +49,7 @@ public class CommentControllerTests {
 
         CommentDTO commentDTOMock = new CommentDTO();
         commentDTOMock.setComment("Descricao do Comentario");
+        commentDTOMock.setPost(postMock);
 
         this.commentMockMvc.perform(MockMvcRequestBuilders.post("/api/comments")
                 .contentType("application/json")
