@@ -35,12 +35,6 @@ public class PostService {
         return new MessageResponse("Created Post with ID " + savedPost.getId());
     }
 
-    private String getUserCurrentSection() {
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return userDetails.getUsername();
-    }
-
     public List<PostDTO> listAll() {
         List<Post> allPosts = postRepository.findAll();
         return allPosts.stream()
@@ -55,20 +49,19 @@ public class PostService {
 
     public MessageResponse updateById(Long id, PostDTO postDTO) throws PostNotFoundException, PostCanNotBeUpdatedException {
         Post currentPost = verifyExists(id);
-        String userCurrentSection = getUserCurrentSection();
-        if (currentPost.getOwnerName() != null && !currentPost.getOwnerName().equals(userCurrentSection)) {
+        if (!isCurrentUserOwnsOfThePost(currentPost)) {
             throw new PostCanNotBeUpdatedException();
         }
         postDTO.setId(id);
         Post postToUpdate = postMapper.toModel(postDTO);
-        Post updatedPost = postRepository.save(postToUpdate);
+        postToUpdate.setOwnerName(getUserCurrentSection());
+        postRepository.save(postToUpdate);
         return new MessageResponse("Updated post with ID " + id);
     }
 
     public MessageResponse deleteById(Long id) throws PostNotFoundException, PostCanNotBeDeletedException {
-        Post postToDelete = verifyExists(id);
-        String userCurrentSection = getUserCurrentSection();
-        if (postToDelete.getOwnerName() != null && !postToDelete.getOwnerName().equals(userCurrentSection)) {
+        Post currentPost = verifyExists(id);
+        if (!isCurrentUserOwnsOfThePost(currentPost)) {
             throw new PostCanNotBeDeletedException();
         }
         postRepository.deleteById(id);
@@ -83,5 +76,17 @@ public class PostService {
         return optionalPost.get();
     }
 
+    private String getUserCurrentSection() {
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return userDetails.getUsername();
+    }
 
+    public boolean isCurrentUserOwnsOfThePost(Post post) {
+        String userCurrentSection = getUserCurrentSection();
+        if (post.getOwnerName() != null && post.getOwnerName().equals(userCurrentSection)) {
+            return true;
+        }
+        return false;
+    }
 }
