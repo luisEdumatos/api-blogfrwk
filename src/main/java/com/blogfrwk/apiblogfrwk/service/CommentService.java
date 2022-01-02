@@ -41,7 +41,7 @@ public class CommentService {
                 .map(commentMapper::toDTO)
                 .collect(Collectors.toList());
     }
-    
+
     private String getUserCurrentSection() {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();

@@ -31,7 +31,7 @@ public class CommentController {
     })
     @PostMapping(consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponse createEmployee(@RequestBody @Valid CommentDTO commentDTO) {
+    public MessageResponse createComment(@RequestBody @Valid CommentDTO commentDTO) {
         return commentService.createComment(commentDTO);
     }
 
