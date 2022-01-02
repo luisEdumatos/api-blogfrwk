@@ -23,5 +23,9 @@ public class PhotoDTO {
 
     @NotEmpty
     @Size(min = 3)
+    private String photoContent;
+
+    @NotEmpty
+    @Size(min = 3)
     private String photoPath;
 }

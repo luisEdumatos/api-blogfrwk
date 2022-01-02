@@ -2,6 +2,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 
 import com.blogfrwk.apiblogfrwk.dto.request.PhotoDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
+import com.blogfrwk.apiblogfrwk.entity.Photo;
 import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeCreatedException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.PhotoService;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,5 +36,16 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponse createPhoto(@RequestBody @Valid PhotoDTO photoDTO) throws PhotoCanNotBeCreatedException, PostNotFoundException {
         return photoService.createPhoto(photoDTO);
+    }
+
+    @ApiOperation(value = "Busca todas Fotos existentes")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de Fotos retornada com sucesso"),
+            @ApiResponse(code = 401, message = "Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
+    })
+    @GetMapping
+    public List<PhotoDTO> listAll() {
+        return photoService.listAll();
     }
 }

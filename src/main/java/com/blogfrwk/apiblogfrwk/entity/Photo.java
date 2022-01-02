@@ -23,6 +23,9 @@ public class Photo {
     private Post post;
 
     @Column(nullable = false)
+    private String photoContent;
+
+    @Column(nullable = false)
     private String photoPath;
 
     @Column

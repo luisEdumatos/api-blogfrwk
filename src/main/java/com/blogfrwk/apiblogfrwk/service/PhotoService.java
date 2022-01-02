@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -62,5 +64,12 @@ public class PhotoService {
             return true;
         }
         return false;
+    }
+
+    public List<PhotoDTO> listAll() {
+        List<Photo> allPhotos = photoRepository.findAll();
+        return allPhotos.stream()
+                .map(photoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
