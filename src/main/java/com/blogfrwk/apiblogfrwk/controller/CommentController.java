@@ -2,6 +2,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 
 import com.blogfrwk.apiblogfrwk.dto.request.CommentDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
+import com.blogfrwk.apiblogfrwk.exception.CommentCanNotBeUpdatedException;
 import com.blogfrwk.apiblogfrwk.exception.CommentNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.CommentService;
 import io.swagger.annotations.ApiOperation;
@@ -56,5 +57,17 @@ public class CommentController {
     @GetMapping("/{id}")
     public CommentDTO findByID(@PathVariable Long id) throws CommentNotFoundException {
         return commentService.findByID(id);
+    }
+
+    @ApiOperation(value = "Atualiza um Comentário existente")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Comentário atualizado com sucesso"),
+            @ApiResponse(code = 400, message = "Erro na validação dos campos do Comentário"),
+            @ApiResponse(code = 401, message = "Falha de permissão: Não é possível atualizar Comentário de outro dono / Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Post não encontrado para atualização / Erro no parâmetro da requisição Http"),
+    })
+    @PutMapping("/{id}")
+    public MessageResponse updateById(@PathVariable Long id, @RequestBody @Valid CommentDTO commentDTO) throws CommentNotFoundException, CommentCanNotBeUpdatedException {
+        return commentService.updateById(id, commentDTO);
     }
 }

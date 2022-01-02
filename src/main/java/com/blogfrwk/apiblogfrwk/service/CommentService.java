@@ -4,6 +4,7 @@ import com.blogfrwk.apiblogfrwk.dto.mapper.CommentMapper;
 import com.blogfrwk.apiblogfrwk.dto.request.CommentDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Comment;
+import com.blogfrwk.apiblogfrwk.exception.CommentCanNotBeUpdatedException;
 import com.blogfrwk.apiblogfrwk.exception.CommentNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.CommentRepository;
 import com.blogfrwk.apiblogfrwk.security.jwt.JwtUtils;
@@ -49,6 +50,19 @@ public class CommentService {
         return commentMapper.toDTO(comment);
     }
 
+    public MessageResponse updateById(Long id, CommentDTO commentDTO) throws CommentNotFoundException, CommentCanNotBeUpdatedException {
+        Comment currentComment = verifyExists(id);
+        if(!isCurrentUserOwnsOfTheComment(currentComment)) {
+            throw new CommentCanNotBeUpdatedException();
+        }
+        commentDTO.setId(id);
+        Comment commentToUpdate = commentMapper.toModel(commentDTO);
+        commentToUpdate.setOwnerName(getUserCurrentSection());
+        commentToUpdate.setCreationDate(currentComment.getCreationDate());
+        commentRepository.save(commentToUpdate);
+        return new MessageResponse("Updated comment with ID " + id);
+    }
+
     private Comment verifyExists(Long id) throws CommentNotFoundException {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         if (optionalComment.isEmpty()) {
@@ -63,4 +77,11 @@ public class CommentService {
         return userDetails.getUsername();
     }
 
+    public boolean isCurrentUserOwnsOfTheComment(Comment comment) {
+        String userCurrentSection = getUserCurrentSection();
+        if (comment.getOwnerName() != null && comment.getOwnerName().equals(userCurrentSection)) {
+            return true;
+        }
+        return false;
+    }
 }

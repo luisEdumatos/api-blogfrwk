@@ -82,6 +82,7 @@ public class CommentControllerTests extends ApiBlogfrwkApplicationTests {
         this.commentMockMvc.perform(MockMvcRequestBuilders.get("/api/comments/1")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
     public void testUpdateCommentByID() throws Exception {
         PostDTO postDTOMock = new PostDTO();
         postDTOMock.setDescription("Descricao do Post de Teste");
