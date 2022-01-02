@@ -4,6 +4,7 @@ import com.blogfrwk.apiblogfrwk.dto.mapper.CommentMapper;
 import com.blogfrwk.apiblogfrwk.dto.request.CommentDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Comment;
+import com.blogfrwk.apiblogfrwk.exception.CommentCanNotBeDeletedException;
 import com.blogfrwk.apiblogfrwk.exception.CommentCanNotBeUpdatedException;
 import com.blogfrwk.apiblogfrwk.exception.CommentNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.CommentRepository;
@@ -61,6 +62,15 @@ public class CommentService {
         commentToUpdate.setCreationDate(currentComment.getCreationDate());
         commentRepository.save(commentToUpdate);
         return new MessageResponse("Updated comment with ID " + id);
+    }
+
+    public MessageResponse deleteById(Long id) throws CommentNotFoundException, CommentCanNotBeDeletedException {
+        Comment currentComment = verifyExists(id);
+        if(!isCurrentUserOwnsOfTheComment(currentComment)) {
+            throw new CommentCanNotBeDeletedException();
+        }
+        commentRepository.deleteById(id);
+        return new MessageResponse("Comment with ID " + id + " has been deleted successfully");
     }
 
     private Comment verifyExists(Long id) throws CommentNotFoundException {

@@ -2,6 +2,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 
 import com.blogfrwk.apiblogfrwk.dto.request.CommentDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
+import com.blogfrwk.apiblogfrwk.exception.CommentCanNotBeDeletedException;
 import com.blogfrwk.apiblogfrwk.exception.CommentCanNotBeUpdatedException;
 import com.blogfrwk.apiblogfrwk.exception.CommentNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.CommentService;
@@ -69,5 +70,17 @@ public class CommentController {
     @PutMapping("/{id}")
     public MessageResponse updateById(@PathVariable Long id, @RequestBody @Valid CommentDTO commentDTO) throws CommentNotFoundException, CommentCanNotBeUpdatedException {
         return commentService.updateById(id, commentDTO);
+    }
+
+    @ApiOperation(value = "Deleta um Comentário existente")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Comentário deletado com sucesso"),
+            @ApiResponse(code = 401, message = "Falha de permissão: Não é possível excluir Comentário de outro dono / Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Post não encontrado para deleção / Erro no parâmetro da requisição Http"),
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MessageResponse deleteById(@PathVariable Long id) throws CommentNotFoundException, CommentCanNotBeDeletedException {
+        return commentService.deleteById(id);
     }
 }
