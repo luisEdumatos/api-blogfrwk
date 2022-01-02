@@ -4,6 +4,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.exception.PostCanNotBeDeletedException;
+import com.blogfrwk.apiblogfrwk.exception.PostCanNotBeUpdatedException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.PostService;
 import io.swagger.annotations.ApiOperation;
@@ -60,8 +61,15 @@ public class PostController {
         return postService.findByID(id);
     }
 
+    @ApiOperation(value = "Atualiza um Post existente")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Post atualizado com sucesso"),
+            @ApiResponse(code = 400, message = "Erro na validação dos campos do Post"),
+            @ApiResponse(code = 401, message = "Falha de permissão: Não é possível atualizar Post de outro dono / Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Post não encontrado para atualização / Erro no parâmetro da requisição Http"),
+    })
     @PutMapping("/{id}")
-    public MessageResponse updateById(@PathVariable Long id, @RequestBody @Valid PostDTO postDTO) throws PostNotFoundException {
+    public MessageResponse updateById(@PathVariable Long id, @RequestBody @Valid PostDTO postDTO) throws PostNotFoundException, PostCanNotBeUpdatedException {
         return postService.updateById(id, postDTO);
     }
 

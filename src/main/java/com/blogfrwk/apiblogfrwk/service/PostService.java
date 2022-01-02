@@ -5,6 +5,7 @@ import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Post;
 import com.blogfrwk.apiblogfrwk.exception.PostCanNotBeDeletedException;
+import com.blogfrwk.apiblogfrwk.exception.PostCanNotBeUpdatedException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.PostRepository;
 import com.blogfrwk.apiblogfrwk.security.jwt.JwtUtils;
@@ -52,8 +53,12 @@ public class PostService {
         return postMapper.toDTO(post);
     }
 
-    public MessageResponse updateById(Long id, PostDTO postDTO) throws PostNotFoundException {
-        verifyExists(id);
+    public MessageResponse updateById(Long id, PostDTO postDTO) throws PostNotFoundException, PostCanNotBeUpdatedException {
+        Post currentPost = verifyExists(id);
+        String userCurrentSection = getUserCurrentSection();
+        if (currentPost.getOwnerName() != null && !currentPost.getOwnerName().equals(userCurrentSection)) {
+            throw new PostCanNotBeUpdatedException();
+        }
         postDTO.setId(id);
         Post postToUpdate = postMapper.toModel(postDTO);
         Post updatedPost = postRepository.save(postToUpdate);
