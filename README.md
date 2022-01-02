@@ -6,12 +6,12 @@ Spring Boot, PostgreSQL, Spring Security, JWT, JPA, Hibernate, Lombok, Mapstruct
 
 ## Requisitos 
 
-**1. Seu ambiente deve estar configurado e/ou ter instalado: **
+**Seu ambiente deve estar configurado e/ou ter instalado:**
 
-- Java 11 
-- Maven 3.8.1 
-- PostgresSQL
-- Postman
+- Java 11 (Configurar nas variaveis de ambiente)
+- Maven 3.8.1 (Configurar nas variaveis de ambiente)
+- PostgresSQL (Configurações basicas para criar bases de dados)
+- Postman (Instalação)
 
 ## Como executar a API?
 
@@ -28,8 +28,11 @@ git clone https://github.com/luisEdumatos/api-blogfrwk.git
 
 **3. Altere o username e password de acordo com o usuário configurado no seu BD**
 
-+ Arquivos de configuração: Dev: `\src\main\resources\application.properties` - Tests: `\src\test\resources\test.properties`
-+ Alterar `spring.datasource.username` e `spring.datasource.password` 
++ Arquivos de configuração:
+ 
+Dev: `\src\main\resources\application.properties` - Tests: `\src\test\resources\test.properties`
+
++ Alterar ambos em `spring.datasource.username` e `spring.datasource.password` 
 
 **4. Acesse a pasta do projeto \api-blogfrwk\ e execute o Maven**
 
@@ -75,3 +78,10 @@ Para acessa-lo, após iniciar a aplicação a documentação estará disponível
 
 O plugin JaCoCo está configurado na aplicação para analise dos testes implementados. Segundo a analise do plugin, a API está com cobertura de 40% de testes. 
 Para acessar os resultados completos abra o arquivo jacoco.html disponível na pasta raiz deste projeto. 
+
+## Considerações Finais
+
+**Melhorias futuras**
+
+- Criar um bucket na AWS S3 para armazenamento das Photos cadastradas pela API. 
+- Criar uma imagem em container Docker. 
