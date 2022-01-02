@@ -67,7 +67,16 @@ Photos:
 Após ter executado o Maven e iniciado a aplicação, é possível utilizar o Swagger e o Postman para acessar os EndPoints. 
 Segue abaixo instruções de como utilizar o Postman: 
 
+- Crie usuário: 
+![image](https://user-images.githubusercontent.com/32941370/147891784-a25e353f-f663-468f-a89c-4f46d5ebf632.png)
 
+- Faça Login copie e o Token disponivel no atributo "accessToken":
+![image](https://user-images.githubusercontent.com/32941370/147891794-8c3ae690-e6ea-43ea-9ca9-d273cd1f3359.png)
+
+- Utilize o Token para acessar os demais EndPoints:
+![image](https://user-images.githubusercontent.com/32941370/147891835-f7359df2-ec66-4881-b6a5-7992d3cf0446.png)
+
+Obs: Para trocar de usuário, basta gerar novamente o Token via Login e alterar o campo Value do header com o novo Token. 
 
 ## Documentação da API
 
