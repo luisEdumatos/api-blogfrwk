@@ -81,4 +81,28 @@ public class CommentControllerTests extends ApiBlogfrwkApplicationTests {
 
         this.commentMockMvc.perform(MockMvcRequestBuilders.get("/api/comments/1")).andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    public void testUpdateCommentByID() throws Exception {
+        PostDTO postDTOMock = new PostDTO();
+        postDTOMock.setDescription("Descricao do Post de Teste");
+
+        this.postController.createPost(postDTOMock);
+
+        Post postMock = new Post();
+        postMock.setDescription("Descricao do Post de Teste");
+        postMock.setId(1L);
+
+        CommentDTO commentDTOMock = new CommentDTO();
+        commentDTOMock.setComment("Descricao do Comentario");
+        commentDTOMock.setPost(postMock);
+
+        this.commentController.createComment(commentDTOMock);
+
+        commentDTOMock.setComment("Nova Descricao do Comentario");
+
+        this.commentMockMvc.perform(MockMvcRequestBuilders.put("/api/comments/1")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(commentDTOMock)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }

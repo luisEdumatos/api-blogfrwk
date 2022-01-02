@@ -63,6 +63,8 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
 
         this.postController.createPost(postMock);
 
+        postMock.setDescription("Nova descricao Post de Teste");
+
         this.postMockMvc.perform(MockMvcRequestBuilders.put("/api/posts/1")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(postMock)))
