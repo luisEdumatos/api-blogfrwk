@@ -6,6 +6,7 @@ import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Photo;
 import com.blogfrwk.apiblogfrwk.entity.Post;
 import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeCreatedException;
+import com.blogfrwk.apiblogfrwk.exception.PhotoNotFoundException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.PhotoRepository;
 import com.blogfrwk.apiblogfrwk.repository.PostRepository;
@@ -44,6 +45,26 @@ public class PhotoService {
         return new MessageResponse("Create Photo with ID " + savedPhoto.getId());
     }
 
+    public List<PhotoDTO> listAll() {
+        List<Photo> allPhotos = photoRepository.findAll();
+        return allPhotos.stream()
+                .map(photoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public PhotoDTO findByID(Long id) throws PhotoNotFoundException {
+        Photo photo = verifyExists(id);
+        return photoMapper.toDTO(photo);
+    }
+
+    private Photo verifyExists(Long id) throws PhotoNotFoundException {
+        Optional<Photo> optionalPhoto = photoRepository.findById(id);
+        if (optionalPhoto.isEmpty()) {
+            throw new PhotoNotFoundException(id);
+        }
+        return optionalPhoto.get();
+    }
+
     private Post verifyPostExists(Long id) throws PostNotFoundException {
         Optional<Post> optionalPost = postRepository.findById(id);
         if (optionalPost.isEmpty()) {
@@ -64,12 +85,5 @@ public class PhotoService {
             return true;
         }
         return false;
-    }
-
-    public List<PhotoDTO> listAll() {
-        List<Photo> allPhotos = photoRepository.findAll();
-        return allPhotos.stream()
-                .map(photoMapper::toDTO)
-                .collect(Collectors.toList());
     }
 }

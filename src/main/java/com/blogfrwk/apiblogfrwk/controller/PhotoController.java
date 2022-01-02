@@ -4,6 +4,7 @@ import com.blogfrwk.apiblogfrwk.dto.request.PhotoDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Photo;
 import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeCreatedException;
+import com.blogfrwk.apiblogfrwk.exception.PhotoNotFoundException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.PhotoService;
 import io.swagger.annotations.ApiOperation;
@@ -47,5 +48,16 @@ public class PhotoController {
     @GetMapping
     public List<PhotoDTO> listAll() {
         return photoService.listAll();
+    }
+
+    @ApiOperation(value = "Busca uma Foto específica a partir de um ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Foto solicitado foi retornado com sucesso"),
+            @ApiResponse(code = 401, message = "Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Foto com ID informado não foi encontrada / Erro no parâmetro da requisição Http"),
+    })
+    @GetMapping("/{id}")
+    public PhotoDTO findByID(@PathVariable Long id) throws PhotoNotFoundException {
+        return photoService.findByID(id);
     }
 }
