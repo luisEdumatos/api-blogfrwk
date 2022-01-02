@@ -84,6 +84,7 @@ public class PhotoControllerTests extends ApiBlogfrwkApplicationTests {
         this.photoMockMvc.perform(MockMvcRequestBuilders.get("/api/photos/1")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
     public void testDeletePhotoById() throws Exception {
         PostDTO postDTOMock = new PostDTO();
         postDTOMock.setDescription("Descricao do Post de Teste");

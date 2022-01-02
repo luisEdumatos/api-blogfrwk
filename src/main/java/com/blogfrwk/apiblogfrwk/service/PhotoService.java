@@ -6,6 +6,7 @@ import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Photo;
 import com.blogfrwk.apiblogfrwk.entity.Post;
 import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeCreatedException;
+import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeDeletedException;
 import com.blogfrwk.apiblogfrwk.exception.PhotoNotFoundException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.PhotoRepository;
@@ -55,6 +56,16 @@ public class PhotoService {
     public PhotoDTO findByID(Long id) throws PhotoNotFoundException {
         Photo photo = verifyExists(id);
         return photoMapper.toDTO(photo);
+    }
+
+    public MessageResponse deleteById(Long id) throws PhotoNotFoundException, PostNotFoundException, PhotoCanNotBeDeletedException {
+        Photo currentPhoto = verifyExists(id);
+        Post userOwnerPost = verifyPostExists(currentPhoto.getPost().getId());
+        if(!isCurrentUserOwnsOfThePost(userOwnerPost)) {
+            throw new PhotoCanNotBeDeletedException();
+        }
+        photoRepository.deleteById(id);
+        return new MessageResponse("Photo with ID " + id + " has been deleted successfully");
     }
 
     private Photo verifyExists(Long id) throws PhotoNotFoundException {

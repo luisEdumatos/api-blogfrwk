@@ -4,6 +4,7 @@ import com.blogfrwk.apiblogfrwk.dto.request.PhotoDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Photo;
 import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeCreatedException;
+import com.blogfrwk.apiblogfrwk.exception.PhotoCanNotBeDeletedException;
 import com.blogfrwk.apiblogfrwk.exception.PhotoNotFoundException;
 import com.blogfrwk.apiblogfrwk.exception.PostNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.PhotoService;
@@ -59,5 +60,17 @@ public class PhotoController {
     @GetMapping("/{id}")
     public PhotoDTO findByID(@PathVariable Long id) throws PhotoNotFoundException {
         return photoService.findByID(id);
+    }
+
+    @ApiOperation(value = "Deleta uma Foto existente")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Foto deletada com sucesso"),
+            @ApiResponse(code = 401, message = "Falha de permissão: Não é possível excluir Foto no album de outro dono / Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Comentário não encontrado para deleção / Erro no parâmetro da requisição Http"),
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MessageResponse deleteById(@PathVariable Long id) throws PhotoNotFoundException, PostNotFoundException, PhotoCanNotBeDeletedException {
+        return photoService.deleteById(id);
     }
 }
