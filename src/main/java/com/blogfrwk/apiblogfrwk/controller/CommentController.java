@@ -65,7 +65,7 @@ public class CommentController {
             @ApiResponse(code = 200, message = "Comentário atualizado com sucesso"),
             @ApiResponse(code = 400, message = "Erro na validação dos campos do Comentário"),
             @ApiResponse(code = 401, message = "Falha de permissão: Não é possível atualizar Comentário de outro dono / Autenticação de usuário não realizada"),
-            @ApiResponse(code = 404, message = "Post não encontrado para atualização / Erro no parâmetro da requisição Http"),
+            @ApiResponse(code = 404, message = "Comentário não encontrado para atualização / Erro no parâmetro da requisição Http"),
     })
     @PutMapping("/{id}")
     public MessageResponse updateById(@PathVariable Long id, @RequestBody @Valid CommentDTO commentDTO) throws CommentNotFoundException, CommentCanNotBeUpdatedException {
@@ -76,7 +76,7 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Comentário deletado com sucesso"),
             @ApiResponse(code = 401, message = "Falha de permissão: Não é possível excluir Comentário de outro dono / Autenticação de usuário não realizada"),
-            @ApiResponse(code = 404, message = "Post não encontrado para deleção / Erro no parâmetro da requisição Http"),
+            @ApiResponse(code = 404, message = "Comentário não encontrado para deleção / Erro no parâmetro da requisição Http"),
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -42,4 +42,11 @@ public class Post {
     )
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.REMOVE
+    )
+    @JsonIgnore
+    private List<Photo> album = new ArrayList<>();
 }
