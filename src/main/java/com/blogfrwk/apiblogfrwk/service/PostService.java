@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,12 +27,14 @@ import java.util.stream.Collectors;
 public class PostService {
     private PostRepository postRepository;
     private JwtUtils jwtUtils;
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     private final PostMapper postMapper = PostMapper.INSTANCE;
 
     public MessageResponse createPost(PostDTO postDTO) {
         Post postToSave = postMapper.toModel(postDTO);
         postToSave.setOwnerName(getUserCurrentSection());
+        postToSave.setCreationDate(sdf.format(new Date()));
         Post savedPost = postRepository.save(postToSave);
         return new MessageResponse("Created Post with ID " + savedPost.getId());
     }
@@ -55,6 +59,7 @@ public class PostService {
         postDTO.setId(id);
         Post postToUpdate = postMapper.toModel(postDTO);
         postToUpdate.setOwnerName(getUserCurrentSection());
+        postToUpdate.setCreationDate(currentPost.getCreationDate());
         postRepository.save(postToUpdate);
         return new MessageResponse("Updated post with ID " + id);
     }

@@ -28,5 +28,8 @@ public class Post {
     private String mainLink;
 
     @Column
+    private String creationDate;
+
+    @Column
     private String ownerName;
 }
