@@ -4,6 +4,7 @@ import com.blogfrwk.apiblogfrwk.dto.mapper.CommentMapper;
 import com.blogfrwk.apiblogfrwk.dto.request.CommentDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
 import com.blogfrwk.apiblogfrwk.entity.Comment;
+import com.blogfrwk.apiblogfrwk.exception.CommentNotFoundException;
 import com.blogfrwk.apiblogfrwk.repository.CommentRepository;
 import com.blogfrwk.apiblogfrwk.security.jwt.JwtUtils;
 import com.blogfrwk.apiblogfrwk.security.services.UserDetailsImpl;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,11 +44,23 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
+    public CommentDTO findByID(Long id) throws CommentNotFoundException {
+        Comment comment = verifyExists(id);
+        return commentMapper.toDTO(comment);
+    }
+
+    private Comment verifyExists(Long id) throws CommentNotFoundException {
+        Optional<Comment> optionalComment = commentRepository.findById(id);
+        if (optionalComment.isEmpty()) {
+            throw new CommentNotFoundException(id);
+        }
+        return optionalComment.get();
+    }
+
     private String getUserCurrentSection() {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return userDetails.getUsername();
     }
-
 
 }

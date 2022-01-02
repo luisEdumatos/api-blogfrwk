@@ -2,6 +2,7 @@ package com.blogfrwk.apiblogfrwk.controller;
 
 import com.blogfrwk.apiblogfrwk.dto.request.CommentDTO;
 import com.blogfrwk.apiblogfrwk.dto.response.MessageResponse;
+import com.blogfrwk.apiblogfrwk.exception.CommentNotFoundException;
 import com.blogfrwk.apiblogfrwk.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -44,5 +45,16 @@ public class CommentController {
     @GetMapping
     public List<CommentDTO> listAll() {
         return commentService.listAll();
+    }
+
+    @ApiOperation(value = "Busca um Comentário específico a partir de um ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Comentário solicitado foi retornado com sucesso"),
+            @ApiResponse(code = 401, message = "Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Comentário com ID informado não foi encontrado / Erro no parâmetro da requisição Http"),
+    })
+    @GetMapping("/{id}")
+    public CommentDTO findByID(@PathVariable Long id) throws CommentNotFoundException {
+        return commentService.findByID(id);
     }
 }
