@@ -83,4 +83,29 @@ public class PhotoControllerTests extends ApiBlogfrwkApplicationTests {
 
         this.photoMockMvc.perform(MockMvcRequestBuilders.get("/api/photos/1")).andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    public void testDeletePhotoById() throws Exception {
+        PostDTO postDTOMock = new PostDTO();
+        postDTOMock.setDescription("Descricao do Post de Teste");
+
+        this.postController.createPost(postDTOMock);
+
+        Post postMock = new Post();
+        postMock.setDescription("Descricao do Post de Teste");
+        postMock.setId(1L);
+
+        PhotoDTO photoDTOMock = new PhotoDTO();
+        photoDTOMock.setPhotoContent("Conteudo");
+        photoDTOMock.setPhotoPath("Caminho");
+        photoDTOMock.setPost(postMock);
+
+        this.photoController.createPhoto(photoDTOMock);
+
+        this.photoController.createPhoto(photoDTOMock);
+
+        this.photoMockMvc.perform(MockMvcRequestBuilders.delete("/api/photos/2")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(photoDTOMock)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
