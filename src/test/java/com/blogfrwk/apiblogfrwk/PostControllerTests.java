@@ -1,10 +1,7 @@
 package com.blogfrwk.apiblogfrwk;
 
-import com.blogfrwk.apiblogfrwk.controller.AuthController;
 import com.blogfrwk.apiblogfrwk.controller.PostController;
-import com.blogfrwk.apiblogfrwk.dto.request.LoginRequest;
 import com.blogfrwk.apiblogfrwk.dto.request.PostDTO;
-import com.blogfrwk.apiblogfrwk.dto.request.SignupRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,9 +21,6 @@ public class PostControllerTests extends ApiBlogfrwkApplicationTests {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private AuthController authController;
 
     @Autowired
     private PostController postController;
