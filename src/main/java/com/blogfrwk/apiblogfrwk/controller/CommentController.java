@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -32,5 +33,16 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponse createEmployee(@RequestBody @Valid CommentDTO commentDTO) {
         return commentService.createComment(commentDTO);
+    }
+
+    @ApiOperation(value = "Busca todos comentários existentes")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de comentários retornada com sucesso"),
+            @ApiResponse(code = 401, message = "Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
+    })
+    @GetMapping
+    public List<CommentDTO> listAll() {
+        return commentService.listAll();
     }
 }

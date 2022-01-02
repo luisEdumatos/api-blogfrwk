@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -33,9 +35,18 @@ public class CommentService {
         return new MessageResponse("Created Comment with ID " + savedComment.getId());
     }
 
+    public List<CommentDTO> listAll() {
+        List<Comment> allComments = commentRepository.findAll();
+        return allComments.stream()
+                .map(commentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
     private String getUserCurrentSection() {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return userDetails.getUsername();
     }
+
+
 }

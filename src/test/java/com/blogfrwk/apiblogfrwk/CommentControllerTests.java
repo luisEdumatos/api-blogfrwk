@@ -57,4 +57,9 @@ public class CommentControllerTests extends ApiBlogfrwkApplicationTests {
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
+    @Test
+    public void testListAllComments() throws Exception {
+        this.commentMockMvc.perform(MockMvcRequestBuilders.get("/api/comments")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
 }
