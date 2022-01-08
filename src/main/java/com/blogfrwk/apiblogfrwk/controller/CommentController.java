@@ -49,6 +49,17 @@ public class CommentController {
         return commentService.listAll();
     }
 
+    @ApiOperation(value = "Busca todos comentários de um Post especifico")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de comentários retornada com sucesso"),
+            @ApiResponse(code = 401, message = "Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
+    })
+    @GetMapping("/byPost/{id}")
+    public List<CommentDTO> findCommentByPostId(@PathVariable Long id) {
+        return commentService.findCommentByPostId(id);
+    }
+
     @ApiOperation(value = "Busca um Comentário específico a partir de um ID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Comentário solicitado foi retornado com sucesso"),

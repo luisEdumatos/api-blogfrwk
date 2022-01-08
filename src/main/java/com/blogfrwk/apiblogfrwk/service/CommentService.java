@@ -46,6 +46,13 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
+    public List<CommentDTO> findCommentByPostId(Long id) {
+        List<Comment> allCommentsByPostId = commentRepository.findCommentByPostId(id);
+        return allCommentsByPostId.stream()
+                .map(commentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public CommentDTO findByID(Long id) throws CommentNotFoundException {
         Comment comment = verifyExists(id);
         return commentMapper.toDTO(comment);
