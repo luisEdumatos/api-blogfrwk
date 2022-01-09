@@ -21,11 +21,6 @@ public class PhotoDTO {
     @NotNull
     private Post post;
 
-    @NotEmpty
-    @Size(min = 3)
-    private String photoContent;
-
-    @NotEmpty
-    @Size(min = 3)
+    @NotNull
     private String photoPath;
 }

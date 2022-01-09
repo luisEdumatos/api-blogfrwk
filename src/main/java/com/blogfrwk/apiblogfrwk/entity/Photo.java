@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -21,9 +22,6 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    @Column(nullable = false)
-    private String photoContent;
 
     @Column(nullable = false)
     private String photoPath;

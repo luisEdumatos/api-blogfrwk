@@ -20,7 +20,6 @@ public class PostDTO {
     @Size(min = 10, max = 100)
     private String description;
 
-    @Size(min = 10, max = 100)
     private String mainImage;
 
     @Size(min = 10, max = 100)
