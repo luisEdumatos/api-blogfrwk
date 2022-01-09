@@ -59,6 +59,8 @@ Comments:
 
 Photos: 
 - Cadastrar (POST): Apenas o dono do Post ao qual a Photo pertencerá.
+Obs: As imagens são armazenadas em um Bucket AWS S3. Entre em contato para obter as credenciais, ou crie suas proprias e altere no arquivo properties. 
+
 - Ler (GET): Qualquer usuário autenticado
 - Deletar (DELETE): Apenas o dono do Post ao qual a Photo pertence.
 
@@ -95,5 +97,4 @@ Para acessar os resultados completos abra o arquivo jacoco.html disponível na p
 
 **Melhorias futuras**
 
-- Criar um bucket na AWS S3 para armazenamento das Photos cadastradas pela API. 
 - Criar uma imagem em container Docker. 
