@@ -31,7 +31,7 @@ public class PhotoController {
             @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
     })
     @PostMapping(
-            value = "/uploadFile",
+            value = "/uploadPhoto",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
@@ -49,6 +49,17 @@ public class PhotoController {
     @GetMapping
     public List<PhotoDTO> listAll() {
         return photoService.listAll();
+    }
+
+    @ApiOperation(value = "Busca todas fotos de um Post especifico")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de fotos retornada com sucesso"),
+            @ApiResponse(code = 401, message = "Autenticação de usuário não realizada"),
+            @ApiResponse(code = 404, message = "Erro no parâmetro da requisição Http"),
+    })
+    @GetMapping("/byPost/{id}")
+    public List<PhotoDTO> findPhotoByPostId(@PathVariable Long id) {
+        return photoService.findPhotoByPostId(id);
     }
 
     @ApiOperation(value = "Busca uma Foto específica a partir de um ID")

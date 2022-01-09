@@ -102,6 +102,13 @@ public class PhotoService {
                 .collect(Collectors.toList());
     }
 
+    public List<PhotoDTO> findPhotoByPostId(Long id) {
+        List<Photo> allPhotosByPostId = photoRepository.findPhotoByPostId(id);
+        return allPhotosByPostId.stream()
+                .map(photoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public PhotoDTO findByID(Long id) throws PhotoNotFoundException {
         Photo photo = verifyExists(id);
         return photoMapper.toDTO(photo);
