@@ -25,9 +25,6 @@ public class Post {
     private String description;
 
     @Column
-    private String mainImage;
-
-    @Column
     private String mainLink;
 
     @Column

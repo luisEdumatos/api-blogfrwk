@@ -17,10 +17,8 @@ public class PostDTO {
     private Long id;
 
     @NotEmpty
-    @Size(min = 10, max = 100)
+    @Size(min = 10, max = 200)
     private String description;
-
-    private String mainImage;
 
     @Size(min = 10, max = 100)
     private String mainLink;
