@@ -88,7 +88,7 @@ Para acessa-lo, após iniciar a aplicação a documentação estará disponível
 
 ## Testes
 
-O plugin JaCoCo está configurado na aplicação para analise dos testes implementados. Segundo a analise do plugin, a API está com cobertura de 40% de testes. 
+O plugin JaCoCo está configurado na aplicação para analise dos testes implementados. Segundo a analise do plugin, a API está com cobertura de 34% de testes. 
 Para acessar os resultados completos abra o arquivo jacoco.html disponível na pasta raiz deste projeto. 
 
 ## Considerações Finais
