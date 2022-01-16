@@ -2,7 +2,7 @@
 
 API Rest Java para Blog (Posts, Comments, Photos) utilizando-se:
  
-Spring Boot, PostgreSQL, Spring Security, JWT, JPA, Hibernate, Lombok, Mapstruct, Testes MockMvc, Swagger, Jacoco. 
+AWS S3, Spring Boot, PostgreSQL, Spring Security, JWT, JPA, Hibernate, Lombok, Mapstruct, Testes MockMvc, Swagger, Jacoco. 
 
 ## Requisitos 
 
