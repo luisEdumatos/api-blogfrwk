@@ -1,0 +1,37 @@
+version: "3"
+services:
+
+  db:
+    image: postgres:11
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_DB=itmanagerdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+
+  apiblogfrwk:
+    image: blog-api:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  appblogfrwk:
+    image: blog-app:latest
+    ports:
+      - 4200:80
+    depends_on:
+      - apiblogfrwk
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
